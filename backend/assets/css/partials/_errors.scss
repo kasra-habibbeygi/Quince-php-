@@ -1,0 +1,65 @@
+.error_field {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: -30px;
+    padding: 20px 10px;
+    width: 450px;
+    text-align: right;
+    direction: rtl;
+    border-radius: 5px;
+    box-shadow: 0px 0px 15px -5px #828282;
+    opacity: 0;
+    @include transition(1s , cubic-bezier(0, 0, 0.15, 1.42) , 0s);
+
+    p {
+        margin: 0;
+    }
+
+    .close_error{
+        position: absolute;
+        left: 20px;
+        cursor: pointer;
+    }
+
+    .fa-exclamation-circle{
+        margin-left: 10px;
+        font-size: 1.2rem;
+        position: relative;
+        top: -2px;
+    }
+
+}
+
+.active{
+    opacity: 1 !important;
+    top: 50px !important;
+}
+
+.danger_error {
+    background-color: $danger_bg;
+    border: 1px solid $danger_border;
+    color: $danger_color;
+}
+
+.warning_error {
+    background-color: $warning_bg;
+    border: 1px solid $warning_border;
+    color: $warning_color;
+}
+
+.success_danger {
+    background-color: $success_bg;
+    border: 1px solid $success_border;
+    color: $success_color;
+}
+
+@media only screen and (max-width: 900px) {
+
+    .error_box .error p,
+    .error_box .error i {
+
+        font-size: 0.8rem;
+
+    }
+}

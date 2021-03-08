@@ -1,0 +1,50 @@
+@import '../partials/variable',
+        '../partials/errors';
+
+@font-face {
+    font-family: $NF;
+    src: url("../../font/Vazir-Light.eot"),
+        url("../../font/Vazir-Light.ttf"),
+        url("../../font/Vazir-Light.woff"),
+        url("../../font/Vazir-Light.woff2");
+}
+@font-face {
+    font-family: $LF;
+    src: url("../../font/Vazir-Thin.ttf"),
+        url("../../font/Vazir-Thin.ttf"),
+        url("../../font/Vazir-Thin.woff"),
+        url("../../font/Vazir-Thin.woff2");
+}
+
+//main general css
+
+body {
+    overflow-x: hidden;
+    font-family: $NF;
+}
+
+button:focus {
+    outline: none;
+}
+
+input{
+    background-color: #F4F3F9 !important;
+    border: none !important;
+
+    &::placeholder{
+        color: #6C757D !important;
+        text-align: right;
+        direction: rtl;
+        font-family: $LF;
+    }
+}
+
+a{
+    &:hover{
+        text-decoration: none;
+    }
+}
+
+.btn.focus, .btn:focus {
+    box-shadow: none;
+}
