@@ -36,6 +36,18 @@
             }
 
         }
+
+        public function getUser(){
+
+            $id = $_SESSION['admin_id'];
+            $SQ = "SELECT * FROM `admins` WHERE id = '$id'";
+            $result = $this -> query($SQ);
+            $user = $this -> getRow($result);
+            $this -> freeResult($result); 
+
+            return $user;
+
+        }
       
     }
 

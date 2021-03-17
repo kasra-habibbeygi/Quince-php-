@@ -51,6 +51,12 @@
 
         }
 
+        public function getRow($val){
+
+            return mysqli_fetch_assoc($val);
+
+        }
+
         // redirect
         public function redirect($url){
 

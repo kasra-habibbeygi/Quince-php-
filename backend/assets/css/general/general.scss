@@ -1,4 +1,5 @@
 @import '../partials/variable',
+        '../partials/mixin',
         '../partials/errors';
 
 @font-face {
@@ -21,6 +22,7 @@
 body {
     overflow-x: hidden;
     font-family: $NF;
+    background-color: #E7E8F2;
 }
 
 button:focus {

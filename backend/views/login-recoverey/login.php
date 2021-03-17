@@ -45,7 +45,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../assets/css/general/bootstrap.min.css">
-    <link rel="stylesheet" href="../../assets/css/general/fontawsome.css">
+    <link rel="stylesheet" href="../../assets/css/general/fontAwsome.css">
     <link rel="stylesheet" href="../../assets/css/general/general.css">
     <link rel="stylesheet" href="../../assets/css/login_recovery/login.css">
     <title>Quince Login</title>

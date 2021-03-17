@@ -1,0 +1,190 @@
+@import '../partials/variable';
+@import '../partials/mixin';
+
+nav {
+    width: 85%;
+    height: 55px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background-color: white;
+    box-shadow: 0px 0px 20px -5px #cacaca;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .left_items {
+        display: flex;
+
+        div {
+            width: 40px;
+            height: 40px;
+            font-size: 1.4rem;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 5px;
+
+            &:first-child {
+                margin-left: 10px;
+            }
+
+            &:hover {
+                background-color: #eee;
+            }
+
+            i {
+                color: $BBA;
+            }
+        }
+    }
+
+    .right_items {
+        display: flex;
+        align-items: center;
+
+        .FL_name {
+            width: 40px;
+            height: 40px;
+            background-color: $LRA;
+            color: $BRA;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3rem;
+            margin-right: 10px;
+            padding-top: 2px;
+        }
+
+        .full_name {
+            margin-right: 10px;
+            direction: rtl;
+            text-align: right;
+            color: #bbbbbb;
+
+            span {
+                color: $BRA;
+                font-weight: bold;
+                font-size: 1.15rem;
+                position: relative;
+                top: 1px;
+            }
+        }
+    }
+}
+
+aside {
+    width: 15%;
+    height: 100vh;
+    background-color: #1E1E2D;
+    position: fixed;
+    z-index: 100;
+    right: 0;
+    top: 0;
+    direction: rtl;
+    text-align: right;
+    @include transition(0.5s, linear, 0s);
+
+    .logo_field {
+        background-color: #1B1B28;
+        width: 100%;
+        height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        img {
+            width: 45%;
+            margin-right: 15px;
+        }
+
+        i {
+            color: #494B74;
+            margin-left: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+    }
+
+    .menu_items {
+        width: 100%;
+
+        ul {
+            padding: 0;
+
+            li {
+                width: 100%;
+                height: 50px;
+
+                a {
+                    direction: rtl;
+                    text-align: right;
+                    width: 100%;
+                    height: 50px;
+                    display: flex;
+                    align-items: center;
+                    border-right: 0px solid $BBA;
+                    @include transition (0.2s, linear, 0s);
+
+                    i {
+                        font-size: 1.2rem;
+                        color: #494B74;
+                        margin-right: 10px;
+                        @include transition (0.2s, linear, 0s);
+                    }
+
+                    p {
+                        color: #A2A3B7;
+                        margin-bottom: 0;
+                        margin-right: 10px;
+                        font-size: 0.9rem;
+                        @include transition (0.2s, linear, 0s);
+                    }
+
+                    &:hover {
+                        border-right: 3px solid $BBA;
+
+                        p {
+                            color: white;
+                        }
+
+                        i {
+                            color: $BBA;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.exit_modal{
+    width: 100%;
+    height: 100vh;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 200;
+    background-color: $modal_bg;
+
+    .main_field{
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .content{
+            width: 500px;
+            padding: 30px;
+            background-color: white;
+            box-shadow: 0px 0px 10px -3px #00000080;
+            border-radius: $radius;
+        }
+    }
+}
