@@ -37,6 +37,17 @@
 
         }
 
+        public function logout(){
+
+            if(isset($_SESSION['admin_id'])){
+
+                unset($_SESSION['admin_id']);
+                session_destroy();  
+
+            }
+
+        }
+
         public function getUser(){
 
             $id = $_SESSION['admin_id'];
@@ -48,7 +59,7 @@
             return $user;
 
         }
-      
+
     }
 
 ?>

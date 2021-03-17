@@ -74,7 +74,7 @@
                     <div class="CI">
                         <img src="../../assets/img/captcha.svg" alt="">
                     </div>
-                    <button class="btn">
+                    <button type="button" class="btn">
                         <i class="far fa-redo"></i>
                     </button>
                     <div class="form-group">

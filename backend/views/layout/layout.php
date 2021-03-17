@@ -25,13 +25,13 @@
     <div class="menu_items">
         <ul>
             <li>
-                <a href="">
+                <a href="../dashboard/dashboard.php">
                     <i class="fad fa-analytics"></i>
                     <p>داشبورد</p>
                 </a>
             </li>
             <li>
-                <a href="">
+                <a href="../profile/profile.php">
                     <i class="fad fa-id-card"></i>
                     <p>پروفایل</p>
                 </a>
@@ -49,10 +49,10 @@
                 </a>
             </li>
             <li>
-                <a href="">
+                <button id="exit">
                     <i class="fad fa-portal-exit"></i>
                     <p>خروج</p>
-                </a>
+                </button>
             </li>
         </ul>
     </div>
@@ -62,7 +62,12 @@
 <div class="exit_modal">
     <div class="main_field">
         <div class="content">
-            <img src="../../assets/img/AA01.svg" alt="">
+        <i class="fal fa-exclamation-circle"></i>
+            <p>آیا برای خروج از پروفایل خود اطمینان دارید ؟</p>
+            <div>
+                <button id="CEM" type="button">بازگشت</button>
+                <a href="?logout=1">خروج</a>
+            </div>
         </div>
     </div>
 </div>

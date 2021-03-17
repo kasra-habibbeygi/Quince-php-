@@ -25,4 +25,13 @@ setTimeout(() => {
     else if ($('.error_field').hasClass('empty-input'))
         activeAlert('لطفا ایمیل و رمز عبور خود را وارد کنید .');
 
+    else if ($('.error_field').hasClass('logout')){
+
+        $('.error_field').removeClass('warning_error');
+        $('.error_field').addClass('success_error');
+        activeAlert('شما از پروفایل کاربری با موفقیت خارج شدید .');
+
+    }
+
+
 }, 100);
