@@ -9,7 +9,7 @@
 
         $email = $main -> safePost('email');
         $password = $main -> safePost('password');
-        $checkEmail = filter_var($email , FILTER_VALIDATE_EMAIL);
+        $checkEmail = $main -> validEmail($email);
         $safePass = $main -> safePassword($password);
 
         if($email === '' || $password === ''){

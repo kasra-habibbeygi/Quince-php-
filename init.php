@@ -15,7 +15,7 @@
 
     }else{
 
-        require_once 'helper/frontend.php';
+        require_once 'helper/frontend';
         $main = new Frontend;
 
     }
