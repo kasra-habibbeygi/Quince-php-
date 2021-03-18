@@ -1,3 +1,9 @@
+<?php
+
+    $admin_name = $main -> getUser();
+
+?>
+
 <nav>
     <div class="left_items">
         <div>
@@ -62,7 +68,7 @@
 <div class="exit_modal">
     <div class="main_field">
         <div class="content">
-        <i class="fal fa-exclamation-circle"></i>
+            <i class="fal fa-exclamation-circle"></i>
             <p>آیا برای خروج از پروفایل خود اطمینان دارید ؟</p>
             <div>
                 <button id="CEM" type="button">بازگشت</button>

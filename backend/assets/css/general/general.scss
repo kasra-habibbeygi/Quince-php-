@@ -1,6 +1,6 @@
 @import '../partials/variable',
-        '../partials/mixin',
-        '../partials/errors';
+'../partials/mixin',
+'../partials/errors';
 
 @font-face {
     font-family: $NF;
@@ -9,6 +9,7 @@
         url("../../font/Vazir-Light.woff"),
         url("../../font/Vazir-Light.woff2");
 }
+
 @font-face {
     font-family: $LF;
     src: url("../../font/Vazir-Thin.ttf"),
@@ -29,11 +30,23 @@ button:focus {
     outline: none;
 }
 
-input{
-    background-color: #F4F3F9 !important;
+input {
+    background-color: #F3F6F9 !important;
     border: none !important;
+    height: 44px !important;
+    border-radius: 7px;
+    font-size: 0.9rem;
+    padding-right: 15px;
+    @include transition(0.2s , linear , 0s);    
+    width: 100%;
 
-    &::placeholder{
+    &:focus {
+        background-color: #ECF0F3 !important;
+        outline: none;
+        box-shadow: -1px 5px 8px -3px #0000001c;
+    }
+
+    &::placeholder {
         color: #6C757D !important;
         text-align: right;
         direction: rtl;
@@ -41,12 +54,42 @@ input{
     }
 }
 
-a{
-    &:hover{
+textarea{
+    background-color: #F3F6F9 !important;
+    border: none !important;
+    height: 150px !important;
+    border-radius: 7px;
+    font-size: 0.9rem;
+    padding: 15px;
+    width: 100%;
+    resize: none;
+    @include transition(0.2s , linear , 0s);
+
+    &:focus {
+        background-color: #ECF0F3 !important;
+        outline: none;
+        box-shadow: -1px 5px 8px -3px #0000001c;
+    }
+
+    &::placeholder {
+        color: #6C757D !important;
+        text-align: right;
+        direction: rtl;
+        font-family: $LF;
+    }
+}
+
+label{
+    font-size: 0.9rem;
+}
+
+a {
+    &:hover {
         text-decoration: none;
     }
 }
 
-.btn.focus, .btn:focus {
+.btn.focus,
+.btn:focus {
     box-shadow: none;
 }

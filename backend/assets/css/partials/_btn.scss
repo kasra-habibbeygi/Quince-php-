@@ -1,0 +1,43 @@
+.red_btn{
+    color: $BRA;
+    background-color: $LRA;
+    &:hover{
+        color: white;
+        background-color: $BRA;
+    }
+}
+.yellow_btn{
+    color: $BYA;
+    background-color: $LYA;
+    &:hover{
+        color: white;
+        background-color: $BYA;
+    }
+}
+.green_btn{
+    color: $BGA;
+    background-color: $LGA;
+    &:hover{
+        color: white;
+        background-color: $BGA;
+    }
+}
+
+// .purple_btn{
+//     color: $d_purple;
+//     background-color: $l_purple;
+//     &:hover{
+//         color: white;
+//         background-color: $d_purple;
+//     }
+// }
+
+.blue_btn{
+    color: $BBA;
+    background-color: $LBA;
+    &:hover{
+        color: white;
+        background-color: $BBA;
+    }
+}
+

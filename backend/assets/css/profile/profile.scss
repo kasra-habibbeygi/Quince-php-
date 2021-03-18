@@ -1,0 +1,140 @@
+@import '../partials/variable';
+@import '../partials/mixin';
+@import '../partials/header';
+@import '../partials/btn';
+@import '../partials/checkbox';
+
+.page_main_field {
+    margin-top: 55px;
+    width: 85%;
+    height: 200px;
+    padding: 30px 30px;
+
+    .field_of_content {
+        width: 100%;
+        display: flex;
+
+        .left_field {
+            width: 75%;
+            background-color: white;
+            border-radius: $radius;
+            padding: 25px;
+            margin-right: 20px;
+            box-shadow: 0px 0px 10px -5px #c9c9c9;
+
+            .input_content {
+                padding: 10px 100px;
+                margin-bottom: 20px;
+
+                .show{
+                    display: block !important;
+                }
+
+                .profile_form{
+                    display: none;
+                }
+
+                .input_field {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 15px 0px;
+                    text-align: right;
+                    direction: rtl;
+
+                    label {
+                        width: 150px;
+                        margin-bottom: 0px;
+                    }
+
+                    .birthday {
+                        width: 100%;
+                        display: flex;
+                        align-items: center;
+
+                        input {
+                            width: 80px;
+                            margin-left: 10px;
+                            margin-right: 10px;
+
+                            &:first-child{
+                                margin-right: 0;
+                            }
+
+                            &:last-child{
+                                margin-left: 0;
+                            }
+                        }
+                    }
+                }
+
+                .check_main_field {
+                    width: 100%;
+                    display: flex;
+                }
+
+                .input_field.checkbox {
+                    justify-content: flex-start;
+
+                    .grid {
+                        display: flex;
+                        justify-content: flex-end;
+                        align-items: center;
+                        text-align: right;
+                        direction: rtl;
+
+                        &:first-child {
+                            margin-left: 100px;
+                        }
+
+                        label {
+                            width: unset;
+                        }
+
+                        .check_label {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .right_field {
+            width: 25%;
+            background-color: white;
+            border-radius: $radius;
+            padding: 25px;
+            box-shadow: 0px 0px 10px -5px #c9c9c9;
+            height: max-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+            button{
+                padding: 15px 0px;
+                width: 100%;
+                background-color: white;
+                border-radius: 5px;
+                padding-right: 10px;
+                margin-top: 10px;
+                text-align: right;
+                border: 0px;
+                direction: rtl;
+                display: flex;
+                align-items: center;
+
+                i{
+                    font-size: 1.5rem;
+                    margin-left: 6px;
+                }
+            }
+
+            .active{
+                background-color: #F3F6F9;
+                color: #F64E60;
+            }
+        }
+    }
+}

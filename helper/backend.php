@@ -16,7 +16,6 @@
 
         }        
         
-        // login 
         public function login($email , $pass){
 
             $SQ = "SELECT id FROM `admins` WHERE status = '1' AND email = '$email' AND password = '$pass'";

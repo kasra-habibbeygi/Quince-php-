@@ -1,18 +1,9 @@
 <?php
 
     require_once '../../../init.php';
+    require_once '../layout/requireCheck.php';
 
-    if(!$main -> checkLogin())
-        $main -> redirect('../login-recoverey/login.php?msg=access-denied');
 
-    $admin_name = $main -> getUser();
-
-    if($main -> safeGet('logout') === '1'){
-
-        $main -> logout();
-        $main -> redirect('../login-recoverey/login.php?msg=logout');
-
-    }     
 ?>
 <!DOCTYPE html>
 <html lang="en">
