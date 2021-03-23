@@ -104,8 +104,37 @@
 
         }
 
-    }
+    }else if(isset($_POST['chose_avatar'])){
 
+        $allowType = array('jpg' , 'jpeg' , 'png' , 'gif');
+        $avatarFileName = $main -> uploadFile('avatar' , '../../assets/media/avatars' , $allowType , $adminId);
+
+        if($avatarFileName === 'upload_error')
+            $main -> redirect('?msg=upload-error');
+
+        else if($avatarFileName === 'type_denied')
+            $main -> redirect('?msg=type-denied');
+
+        else if($avatarFileName === 'update_error2')
+            $main -> redirect('?msg=update-error-2');
+
+        else if($avatarFileName === 'DB_error')
+            $main -> redirect('?msg=DB-error');
+
+        else
+            $main -> redirect('?msg=profile-update');
+
+    }else if(isset($_POST['del_avatar'])){
+
+        $user_info = $HAI;
+        $path = '../../assets/media/avatars/'.$user_info['avatar'];
+        unlink($path);
+        $RUQ = "UPDATE `admins` SET avatar = '' WHERE id = '$adminId'";
+        $result = $main -> query($RUQ);
+
+        if($result)
+            $main -> redirect('?msg=avatar-deleted');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -258,12 +287,22 @@
                             <div class="box_of_img_template">
                                 <div class="box_of_img_template img-box">
                                     <div class="img-show">
-                                        <!-- <div class="remove_parent">
-                                            <img class="uploading_img_from_brows" src="media/avatars/{user_info.avatar}">
-                                            <div name="0" class="remove_img_icon avatar_del remove"></div>
-                                        </div> -->
+                                        <?php
+                                            if($admin_info['avatar'] !== ''){
+                                        ?>
+                                        <div class="remove_parent">
+                                            <img class="uploading_img_from_brows"
+                                                src="../../assets/media/avatars/<?php echo $admin_info['avatar']?>">
+                                        </div>
+                                        <button type="submit" name="del_avatar"
+                                            class="remove_img_icon remove del_avatar"></button>
+                                        <?php
+                                            }
+                                        ?>
                                     </div>
-                                    <input type="file" name="avatar" id="avatar_img" class="input-file-custom file_ajax" accept="image/jpeg, image/png, image/jpg, image/gif">
+                                    <input type="file" name="avatar" id="avatar_img"
+                                        accept="image/jpeg, image/png, image/jpg, image/gif"
+                                        class="input-file-custom file_ajax">
                                     <label for="avatar_img" class="btn btn-tertiary2 js-labelFile">
                                         <i class="fas fa-upload"></i>
                                         <span class="js-fileName mr-2">تصویر پروفایل</span>

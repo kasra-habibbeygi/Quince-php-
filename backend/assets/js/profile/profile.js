@@ -1,4 +1,4 @@
-let tabs = $('.right_field button');
+let tabs = $('.right_field .tabs_field button');
 let proField = $('.profile_form');
 
 for (let i = 0; i < tabs.length; i++) {
@@ -56,19 +56,39 @@ setTimeout(() => {
         activeAlert('شماره موبایل وارد شده اشتباه است .');
 
     else if ($('.error_field').hasClass('duplicate-email'))
-        activeAlert('این ایمیل قبلا ثبت شده است .')
+        activeAlert('این ایمیل قبلا ثبت شده است .');
 
     else if ($('.error_field').hasClass('duplicate-username'))
-        activeAlert('این نام کاربری قبلا ثبت شده است .')
+        activeAlert('این نام کاربری قبلا ثبت شده است .');
 
     else if ($('.error_field').hasClass('short-pass'))
-        activeAlert('رمز عبور باید بیشتر از 8 رقم باشد .')
+        activeAlert('رمز عبور باید بیشتر از 8 رقم باشد .');
 
     else if ($('.error_field').hasClass('dont-match'))
-        activeAlert('رمز عبور جدید با تکرار رمز عبور جدید یکی نیست .')
+        activeAlert('رمز عبور جدید با تکرار رمز عبور جدید یکی نیست .');
 
     else if ($('.error_field').hasClass('incorect-pass'))
-        activeAlert('رمز عبوری فعلی شما اشتباه است .')
+        activeAlert('رمز عبوری فعلی شما اشتباه است .');
+
+    else if ($('.error_field').hasClass('upload-error'))
+        activeAlert('در بارگذاری عکس مشکلی به وجود آمده است .');
+
+    else if ($('.error_field').hasClass('type-denied'))
+        activeAlert('پسوند عکس مجاز نمی باشد .');
+
+    else if ($('.error_field').hasClass('update-error-2'))
+        activeAlert('ارور به دلایل نامعلوم .');
+
+    else if ($('.error_field').hasClass('DB-error'))
+        activeAlert('مشکل در ارتباط با سرور .');
+        
+    else if ($('.error_field').hasClass('avatar-deleted')){
+
+        $('.error_field').removeClass('warning_error');
+        $('.error_field').addClass('success_error');
+        activeAlert('عکس پروفایل با موفقیت حذف شد .');
+        
+    }
 
     else if ($('.error_field').hasClass('profile-update')) {
 

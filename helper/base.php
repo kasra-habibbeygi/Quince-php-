@@ -3,7 +3,7 @@
     defined("DB_HOST")
         or die;
 
-    abstract class Base {
+    abstract  class Base {
 
         private $dblink = null;
 
@@ -103,6 +103,54 @@
             return filter_var($val, FILTER_SANITIZE_NUMBER_INT);
 
         }
+
+        public function uploadFile($input , $path , $allowtypes , $admin_id){
+
+            $error = $_FILES[$input]['error'];
+            if($error == 0){
+
+                $fielName = mb_strtolower($_FILES[$input]['name'] , 'UTF-8');
+                $fileType = pathinfo($fielName ,  PATHINFO_EXTENSION);
+                $isAllow = array_search($fileType , $allowtypes);
+                
+
+                if($isAllow === false){
+
+                        return "type_denied";
+
+                }else{
+
+                    $temp = $_FILES[$input]['tmp_name'];
+                    $newFileName = md5(date('YmdHis').mt_rand(1 , 9999)).'.'.$allowtypes[$isAllow];
+                    $result = move_uploaded_file($temp , "$path/$newFileName");
+
+                    if($result){
+
+                        $UQ = "UPDATE `admins` SET avatar = '$newFileName' WHERE id = '$admin_id'";
+                        $result = $this -> query($UQ);
+
+                        if($result > 0)
+                            return $newFileName;
+
+                        else 
+                            return "DB_error";
+
+                    }
+
+
+                    else 
+                        return "update_error2";
+
+                }
+
+            }else {
+
+                return "upload_error";
+
+            }
+
+        }
+
 
     }
 

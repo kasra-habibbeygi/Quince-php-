@@ -30,6 +30,11 @@
     align-items: center;
 }
 
+.del_avatar{
+    border: 0px;
+    top: -10px !important;
+}
+
 .remove_img_icon::before,
 .remove_img_icon::after {
     content: "";
@@ -55,6 +60,7 @@
 .add_img_icon {
     width: 25px;
     height: 25px;
+    border: 0px;
     background-color: white;
     position: absolute;
     z-index: 50;

@@ -119,29 +119,29 @@
 
             .tabs_field {
                 width: 100%;
-            }
 
-            button {
-                padding: 15px 0px;
-                width: 100%;
-                background-color: white;
-                border-radius: 5px;
-                padding-right: 10px;
-                margin-top: 10px;
-                text-align: right;
-                border: 0px;
-                direction: rtl;
-                display: flex;
-                align-items: center;
-
-                i {
-                    font-size: 1.5rem;
-                    margin-left: 6px;
+                button {
+                    padding: 15px 0px;
+                    width: 100%;
+                    background-color: white;
+                    border-radius: 5px;
+                    padding-right: 10px;
+                    margin-top: 10px;
+                    text-align: right;
+                    border: 0px;
+                    direction: rtl;
+                    display: flex;
+                    align-items: center;
+    
+                    i {
+                        font-size: 1.5rem;
+                        margin-left: 6px;
+                    }
                 }
             }
 
             .active {
-                background-color: #F3F6F9;
+                background-color: #F3F6F9 !important  ;
                 color: #F64E60;
             }
 
