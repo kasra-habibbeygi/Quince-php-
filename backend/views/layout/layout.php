@@ -42,11 +42,47 @@
                     <p>پروفایل</p>
                 </a>
             </li>
-            <li>
-                <a href="">
+            <li class="collaps_item">
+                <button type="button">
                     <i class="fad fa-layer-plus"></i>
                     <p>دسته بندی ها</p>
-                </a>
+                    <i class="far fa-angle-left"></i>
+                </button>
+                <ul class="sub_menu">
+                    <li>
+                        <a href="../category/add-category.php">
+                            <i class="fad fa-circle-notch"></i>
+                            <p>افزودن دسته بندی</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../category/category-list.php">
+                            <i class="fad fa-circle-notch"></i>
+                            <p>لیست دسته بندی ها</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="collaps_item">
+                <button type="button" >
+                    <i class="fad fa-layer-plus"></i>
+                    <p>دسته بندی ها</p>
+                    <i class="far fa-angle-left"></i>
+                </button>
+                <ul class="sub_menu">
+                    <li>
+                        <a href="../category/add-category.php">
+                            <i class="fad fa-circle-notch"></i>
+                            <p>افزودن دسته بندی</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../category/category-list.php">
+                            <i class="fad fa-circle-notch"></i>
+                            <p>لیست دسته بندی ها</p>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a href="">

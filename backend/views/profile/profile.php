@@ -148,7 +148,7 @@
     <link rel="stylesheet" href="../../assets/css/general/general.css">
     <link rel="stylesheet" href="../../assets/css/layout/layout.css">
     <link rel="stylesheet" href="../../assets/css/profile/profile.css">
-    <title>Quince Login</title>
+    <title>پروفایل</title>
 </head>
 
 <body>
