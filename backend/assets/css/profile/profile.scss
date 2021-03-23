@@ -3,12 +3,17 @@
 @import '../partials/header';
 @import '../partials/btn';
 @import '../partials/checkbox';
+@import '../partials/errors';
+@import '../partials/uploader';
 
 .page_main_field {
     margin-top: 55px;
     width: 85%;
-    height: 200px;
     padding: 30px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     .field_of_content {
         width: 100%;
@@ -26,11 +31,11 @@
                 padding: 10px 100px;
                 margin-bottom: 20px;
 
-                .show{
+                .show {
                     display: block !important;
                 }
 
-                .profile_form{
+                .profile_form {
                     display: none;
                 }
 
@@ -58,11 +63,11 @@
                             margin-left: 10px;
                             margin-right: 10px;
 
-                            &:first-child{
+                            &:first-child {
                                 margin-right: 0;
                             }
 
-                            &:last-child{
+                            &:last-child {
                                 margin-left: 0;
                             }
                         }
@@ -112,7 +117,11 @@
             justify-content: center;
             flex-direction: column;
 
-            button{
+            .tabs_field {
+                width: 100%;
+            }
+
+            button {
                 padding: 15px 0px;
                 width: 100%;
                 background-color: white;
@@ -125,15 +134,42 @@
                 display: flex;
                 align-items: center;
 
-                i{
+                i {
                     font-size: 1.5rem;
                     margin-left: 6px;
                 }
             }
 
-            .active{
+            .active {
                 background-color: #F3F6F9;
                 color: #F64E60;
+            }
+
+            .avatar_field {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: max-content;
+            }
+
+            .name_access {
+                width: 100%;
+                text-align: right;
+                direction: rtl;
+                margin-right: 15px;
+
+                h2 {
+                    font-size: 1.3rem;
+                    font-weight: bold;
+                    margin-bottom: 0px;
+                }
+
+                p {
+                    font-size: 0.9rem;
+                    color: #b6b6b6;
+                    margin-bottom: 0px;
+                }
             }
         }
     }

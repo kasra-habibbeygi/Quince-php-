@@ -44,13 +44,13 @@
                 return mysqli_insert_id($this ->dblink);
 
             else if(stristr($q , 'UPDATE') || stristr($q , 'DELETE'))
-                return   mysqli_affected_rows($this -> dblink);
+                return mysqli_affected_rows($this -> dblink);
             
             else 
                 return $result;
 
         }
-
+        
         public function getRow($val){
 
             return mysqli_fetch_assoc($val);
@@ -95,6 +95,12 @@
         public function validEmail($val){
 
             return filter_var($val , FILTER_VALIDATE_EMAIL);
+
+        }
+
+        public function validphone($val){
+
+            return filter_var($val, FILTER_SANITIZE_NUMBER_INT);
 
         }
 

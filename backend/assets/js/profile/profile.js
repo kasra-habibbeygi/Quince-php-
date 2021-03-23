@@ -1,9 +1,9 @@
 let tabs = $('.right_field button');
 let proField = $('.profile_form');
 
-for(let i = 0 ; i < tabs.length; i++){
+for (let i = 0; i < tabs.length; i++) {
 
-    tabs.eq(i).click(function(){
+    tabs.eq(i).click(function () {
 
         tabs.removeClass('active');
         $(this).addClass('active');
@@ -15,7 +15,7 @@ for(let i = 0 ; i < tabs.length; i++){
 
     });
 
-    if(localStorage.tabs){
+    if (localStorage.tabs) {
 
         tabs.removeClass('active');
         tabs.eq(localStorage.tabs).addClass('active');
@@ -26,3 +26,56 @@ for(let i = 0 ; i < tabs.length; i++){
     }
 
 }
+
+// errors
+$('.close_error').click(() => {
+
+    $('.error_field').removeClass('active');
+
+});
+
+function activeAlert(text) {
+
+    $('.error_field').addClass('active');
+    $('.error_field p').text(text);
+
+}
+
+setTimeout(() => {
+
+    if ($('.error_field').hasClass('empty-input'))
+        activeAlert('لطفا تمام ورودی ها پر کنید .');
+
+    else if ($('.error_field').hasClass('invalid-input'))
+        activeAlert('در وارد کردن اطلاعات دقت کنید .');
+
+    else if ($('.error_field').hasClass('invalid-email'))
+        activeAlert('ایمیل وارد شده نامعتبر است .');
+
+    else if ($('.error_field').hasClass('invalid-phone'))
+        activeAlert('شماره موبایل وارد شده اشتباه است .');
+
+    else if ($('.error_field').hasClass('duplicate-email'))
+        activeAlert('این ایمیل قبلا ثبت شده است .')
+
+    else if ($('.error_field').hasClass('duplicate-username'))
+        activeAlert('این نام کاربری قبلا ثبت شده است .')
+
+    else if ($('.error_field').hasClass('short-pass'))
+        activeAlert('رمز عبور باید بیشتر از 8 رقم باشد .')
+
+    else if ($('.error_field').hasClass('dont-match'))
+        activeAlert('رمز عبور جدید با تکرار رمز عبور جدید یکی نیست .')
+
+    else if ($('.error_field').hasClass('incorect-pass'))
+        activeAlert('رمز عبوری فعلی شما اشتباه است .')
+
+    else if ($('.error_field').hasClass('profile-update')) {
+
+        $('.error_field').removeClass('warning_error');
+        $('.error_field').addClass('success_error');
+        activeAlert('اطلاعات پروفایل با موفقیت ویرایش شد .');
+
+    }
+
+}, 100);

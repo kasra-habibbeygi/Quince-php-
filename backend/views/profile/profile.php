@@ -3,8 +3,109 @@
     require_once '../../../init.php';
     require_once '../layout/requireCheck.php';
 
+    $adminId = $_SESSION['admin_id'];    
+    $HAI = $main -> getUser();
+    $AI = $HAI['id'];
+    $birthday = explode('-' , $HAI['birthday']);
     
+    if(isset($_POST["pro_info"])){
+        
+        $firstname = $main -> safePost('firstname');
+        $lastname = $main -> safePost('lastname');
+        $username =$main -> safePost('username');
+        $email = $main -> safePost('email');
+        $phone = $main -> safePost('phone');
+        $gender = (int)$main -> safePost('gender') == '0' ? 'man' : 'woman'; 
+        $validEmail = $main -> validEmail($email);
+        $validphone = $main -> validphone($phone);
+
+        if($firstname === '' || $lastname === '' || $username ==='' || $email === '' || $phone === '')
+            $main -> redirect('?msg=empty-input');
+        
+        else if(strlen($firstname) > 15 || strlen($lastname) > 40 || strlen($username) > 15 || is_numeric($username) || is_numeric($firstname))
+            $main -> redirect('?msg=invalid-input');
+
+        else if(!$validEmail)
+            $main -> redirect('?msg=invalid-email');
+
+        else if(!$validphone)
+            $main -> redirect('?msg=invalid-phone');
+
+        else{
+
+            $main -> updateProfile($adminId , $firstname , $lastname , $username , $validEmail , $validphone , $gender);
+            $main -> redirect('?msg=profile-update');
+
+        }
+
+    }else if(isset($_POST['personal_info'])){
+
+        $day = (int)$main -> safePost('day');
+        $month = (int)$main -> safePost('month');
+        $year = (int)$main -> safePost('year');
+        $country = $main -> safePost('country');
+        $city = $main -> safePost('city');
+        $bio = $main -> safePost('bio');
+        $DB_birthday_arr = array($year , $month , $day);
+        $DB_birthday = implode('-' , $DB_birthday_arr);
+
+        if($day === '' || $month === '' || $year === '' || $country === '' || $city === '' || $bio === '')
+            $main -> redirect('?msg=empty-input');
+        
+        else{
+
+            $UQ = "UPDATE `admins` SET birthday = '$DB_birthday' , country = '$country' , city = '$city' , bio = '$bio' WHERE id = '$AI'";
+            $UR = $main -> query($UQ);
+            $main -> redirect('?msg=profile-update');
+
+        } 
+
+
+    }else if(isset($_POST['change_pass'])){
+
+        $current_pass = $main -> safePost('current_pass');
+        $new_pass = $main -> safePost('new_pass');
+        $re_new_pass = $main -> safePost('re_new_pass');
+
+        $safe_current_pass = $main -> safePassword($current_pass);
+        $safe_new_pass = $main -> safePassword($new_pass);
+        $safe_re_new_pass = $main -> safePassword($re_new_pass);
+
+        $SQ = "SELECT password FROM `admins` WHERE id = '$AI'";
+        $RSQ = $main -> query($SQ);
+        $FRSQ = $main -> getRow($RSQ);
+      
+        if($current_pass === '' || $new_pass === '' || $re_new_pass ==='')
+            $main -> redirect('?msg=empty-input');
+
+        else if(strlen($current_pass) < 8 ||strlen($new_pass) < 8 ||strlen($re_new_pass) < 8)
+            $main -> redirect('?msg=short-pass');
+
+        else if($new_pass !== $re_new_pass)
+            $main -> redirect('?msg=dont-match');
+
+        else{
+
+            if($safe_current_pass == $FRSQ['password']){
+
+                $UQ = "UPDATE `admins` SET password = '$safe_new_pass' WHERE id = '$AI'";
+                $UR = $main -> query($UQ);
+                if($UR > 0)
+                    $main -> redirect('?msg=profile-update');
+                    
+                else 
+                    $main -> redirect('?msg=profile-error');
     
+            }else {
+    
+                $main -> redirect('?msg=incorect-pass');
+    
+            }
+
+        }
+
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,6 +127,13 @@
     <?php require_once '../layout/layout.php'?>
 
     <section class="page_main_field">
+
+        <div class="error_field warning_error <?php echo $main -> safeGet('msg') ?>">
+            <i class="fal fa-exclamation-circle"></i>
+            <p></p>
+            <i class="fal fa-times close_error"></i>
+        </div>
+
         <div class="field_of_content">
             <div class="left_field">
                 <header class="header_field">
@@ -36,31 +144,35 @@
                 <div class="input_content">
                     <form action="" method="post" autocomplete="off" class="profile_form show">
                         <div class="input_field">
-                            <label for="name">نام</label>
-                            <input type="text" name="name" id="name">
+                            <label for="firstname">نام</label>
+                            <input type="text" name="firstname" id="firstname"
+                                value="<?php echo $admin_info['firstname']?>">
                         </div>
                         <div class="input_field">
                             <label for="lastname">نام خانوادگی</label>
-                            <input type="text" name="lastname" id="lastname">
+                            <input type="text" name="lastname" id="lastname"
+                                value="<?php echo $admin_info['lastname']?>">
                         </div>
                         <div class="input_field">
                             <label for="username">نام کاربری</label>
-                            <input type="text" name="username" id="username">
+                            <input type="text" name="username" id="username"
+                                value="<?php echo $admin_info['username']?>">
                         </div>
                         <div class="input_field">
                             <label for="email">ایمیل</label>
-                            <input type="text" name="email" id="email">
+                            <input type="text" name="email" id="email" value="<?php echo $admin_info['email']?>">
                         </div>
                         <div class="input_field">
                             <label for="phone">شماره تماس</label>
-                            <input type="text" name="phone" id="phone">
+                            <input type="text" name="phone" id="phone" value="<?php echo $admin_info['phone']?>">
                         </div>
                         <div class="input_field checkbox">
                             <label for="gender">جنسیت</label>
                             <div class="check_main_field">
                                 <div class="grid">
                                     <label class="checkbox path">
-                                        <input id="man" name="gender" type="radio" class="Q_checkbox">
+                                        <input id="man" name="gender" value="0" type="radio" class="Q_checkbox"
+                                            <?php echo $admin_info['gender'] == 'man' ? 'checked' : ''?>>
                                         <svg viewBox="0 0 21 21">
                                             <path
                                                 d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186">
@@ -71,7 +183,8 @@
                                 </div>
                                 <div class="grid">
                                     <label class="checkbox path">
-                                        <input id="woman" name="gender" type="radio" class="Q_checkbox">
+                                        <input id="woman" name="gender" value="1" type="radio" class="Q_checkbox"
+                                            <?php echo $admin_info['gender'] == 'woman' ? 'checked' : ''?>>
                                         <svg viewBox="0 0 21 21">
                                             <path
                                                 d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186">
@@ -90,22 +203,25 @@
                         <div class="input_field">
                             <label for="phone">تاریخ تولد</label>
                             <div class="birthday">
-                                <input type="number" max="31" min="1" id="day" name="day" placeholder="DD">/
-                                <input type="number" max="12" min="1" id="month" name="month" placeholder="MM">/
-                                <input type="number" id="year" name="year" placeholder="YY">
+                                <input type="number" max="31" min="1" id="day" name="day" placeholder="DD"
+                                    value="<?php echo $birthday[2]?>">/
+                                <input type="number" max="12" min="1" id="month" name="month" placeholder="MM"
+                                    value="<?php echo $birthday[1]?>">/
+                                <input type="number" id="year" name="year" placeholder="YY"
+                                    value="<?php echo $birthday[0]?>">
                             </div>
                         </div>
                         <div class="input_field">
                             <label for="country">کشور</label>
-                            <input type="text" name="country" id="country">
+                            <input type="text" name="country" id="country" value="<?php echo $admin_info['country']?>">
                         </div>
                         <div class="input_field">
                             <label for="city">شهر</label>
-                            <input type="text" name="city" id="city">
+                            <input type="text" name="city" id="city" value="<?php echo $admin_info['city']?>">
                         </div>
                         <div class="input_field">
                             <label for="bio">درباره من</label>
-                            <textarea type="text" name="bio" id="bio"></textarea>
+                            <textarea type="text" name="bio" id="bio"><?php echo $admin_info['bio']?></textarea>
                         </div>
                         <button type="reset" class="btn red_btn">لغو</button>
                         <button type="submit" class="btn green_btn" name="personal_info">ثبت تغییرات</button>
@@ -132,18 +248,45 @@
                 </div>
             </div>
             <div class="right_field">
-                <button class="active">
-                    <i class="fas fa-user-tie"></i>
-                    اطلاعات پروفایل
-                </button>
-                <button>
-                    <i class="far fa-info-circle"></i>
-                    اطلاعات شخصی
-                </button>
-                <button>
-                    <i class="far fa-shield-alt"></i>
-                    امنیت
-                </button>
+                <div class="avatar_field">
+                    <div class="name_access">
+                        <h2><?php echo $admin_info['username']?></h2>
+                        <p>ادمین اصلی</p>
+                    </div>
+                    <div class="field_of_img_template">
+                        <form action="" method="post" enctype="multipart/form-data">
+                            <div class="box_of_img_template">
+                                <div class="box_of_img_template img-box">
+                                    <div class="img-show">
+                                        <!-- <div class="remove_parent">
+                                            <img class="uploading_img_from_brows" src="media/avatars/{user_info.avatar}">
+                                            <div name="0" class="remove_img_icon avatar_del remove"></div>
+                                        </div> -->
+                                    </div>
+                                    <input type="file" name="avatar" id="avatar_img" class="input-file-custom file_ajax" accept="image/jpeg, image/png, image/jpg, image/gif">
+                                    <label for="avatar_img" class="btn btn-tertiary2 js-labelFile">
+                                        <i class="fas fa-upload"></i>
+                                        <span class="js-fileName mr-2">تصویر پروفایل</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="tabs_field">
+                    <button class="active">
+                        <i class="fas fa-user-tie"></i>
+                        اطلاعات پروفایل
+                    </button>
+                    <button>
+                        <i class="far fa-info-circle"></i>
+                        اطلاعات شخصی
+                    </button>
+                    <button>
+                        <i class="far fa-shield-alt"></i>
+                        امنیت
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -152,6 +295,7 @@
     <script src="../../assets/js/general/bootstrap.js"></script>
     <script src="../../assets/js/layout/layout.js"></script>
     <script src="../../assets/js/profile/profile.js"></script>
+    <script src="../../assets/js/custom/uploader.js"></script>
 </body>
 
 </html>

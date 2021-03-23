@@ -1,6 +1,6 @@
 <?php
 
-    $admin_name = $main -> getUser();
+    $admin_info = $main -> getUser();
 
 ?>
 
@@ -15,7 +15,7 @@
     </div>
     <div class="right_items">
         <div class="full_name">
-            سلام <span> <?php echo $admin_name['username']?> !</span>
+            سلام <span> <?php echo $admin_info['username']?> !</span>
         </div>
         <div class="FL_name">
             M

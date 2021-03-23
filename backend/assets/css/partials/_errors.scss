@@ -10,6 +10,7 @@
     border-radius: 5px;
     box-shadow: 0px 0px 15px -5px #828282;
     opacity: 0;
+    z-index: 150;
     @include transition(1s , cubic-bezier(0, 0, 0.15, 1.42) , 0s);
 
     p {
@@ -33,7 +34,7 @@
 
 .active{
     opacity: 1 !important;
-    top: 50px !important;
+    top: 30px !important;
 }
 
 .danger_error {
