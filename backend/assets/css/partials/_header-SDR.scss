@@ -1,0 +1,120 @@
+.header_field {
+    width: 100%;
+    text-align: right;
+    direction: rtl;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #DEE2E6;
+    padding: 0px 30px 20px 30px;
+
+    .title {
+        h1 {
+            font-size: 1.3rem;
+            color: #171717;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: .8rem;
+            color: #b9b9b9;
+        }
+    }
+
+    .options {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 9px;
+            font-size: 1rem;
+            margin-right: 20px;
+        }
+
+        .row_count_select {
+
+            label {
+                margin: 0px;
+                font-size: 0.8rem;
+            }
+
+            select {
+                background-color: #f3f6f9;
+                border: 0;
+                border-radius: 5px;
+                padding: 7px 7px;
+                width: 60px;
+                font-size: 0.9rem;
+
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+
+        .search {
+            margin-left: 20px;
+
+            form {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+
+                input {
+                    border-radius: 5px 0px 0px 5px;
+                    height: 38px !important;
+                    font-size: 0.8rem;
+                    width: 250px;
+                    padding-right: 0;
+
+                    &:focus {
+                        background-color: #F3F6F9 !important;
+                        outline: none;
+                        box-shadow: none;
+                    }
+                }
+
+                button {
+                    border: 0;
+                    border-radius: 0px 5px 5px 0px;
+                    background: #F3F6F9;
+                    color: #495066;
+                    padding: 13px 10px;
+                    height: 38px !important;
+                    font-size: 0.9rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    &:hover {
+                        color: $BRA;
+                    }
+                }
+
+                span {
+                    position: absolute;
+                    left: 0px;
+                    background-color: #f3f6f9;
+                    height: 38px;
+                    padding: 0px 7px;
+                    border-radius: 7px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: #CCCCCC;
+                    cursor: pointer;
+                    font-size: 0.85rem;
+
+                    &:hover {
+                        color: $BRA;
+                    }
+                }
+            }
+        }
+    }
+}

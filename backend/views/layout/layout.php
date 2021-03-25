@@ -4,7 +4,7 @@
 
 ?>
 
-<nav>
+<!-- <nav>
     <div class="left_items">
         <div>
             <i class="fal fa-bell"></i>
@@ -42,44 +42,56 @@
                     <p>پروفایل</p>
                 </a>
             </li>
+            <li>
+                <a href="../category/category.php">
+                    <i class="fad fa-layer-plus"></i>
+                    <p>دسته بندی</p>
+                </a>
+            </li>
             <li class="collaps_item">
                 <button type="button">
-                    <i class="fad fa-layer-plus"></i>
-                    <p>دسته بندی ها</p>
+                    <i class="fad fa-newspaper"></i>
+                    <p>مقالات</p>
                     <i class="far fa-angle-left"></i>
                 </button>
                 <ul class="sub_menu">
                     <li>
                         <a href="../category/add-category.php">
                             <i class="fad fa-circle-notch"></i>
-                            <p>افزودن دسته بندی</p>
+                            <p>افزودن مقاله</p>
                         </a>
                     </li>
                     <li>
                         <a href="../category/category-list.php">
                             <i class="fad fa-circle-notch"></i>
-                            <p>لیست دسته بندی ها</p>
+                            <p>لیست مقالات</p>
                         </a>
                     </li>
                 </ul>
             </li>
             <li class="collaps_item">
-                <button type="button" >
-                    <i class="fad fa-layer-plus"></i>
-                    <p>دسته بندی ها</p>
+                <button type="button">
+                    <i class="fad fa-tags"></i>
+                    <p>فروشگاه</p>
                     <i class="far fa-angle-left"></i>
                 </button>
                 <ul class="sub_menu">
                     <li>
                         <a href="../category/add-category.php">
                             <i class="fad fa-circle-notch"></i>
-                            <p>افزودن دسته بندی</p>
+                            <p>افزودن محصول</p>
                         </a>
                     </li>
                     <li>
                         <a href="../category/category-list.php">
                             <i class="fad fa-circle-notch"></i>
-                            <p>لیست دسته بندی ها</p>
+                            <p>لیست محصولات</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../category/category-list.php">
+                            <i class="fad fa-circle-notch"></i>
+                            <p>کد تخفیف</p>
                         </a>
                     </li>
                 </ul>
@@ -98,7 +110,7 @@
             </li>
         </ul>
     </div>
-</aside>
+</aside> -->
 
 <!-- exit modal -->
 <div class="exit_modal">

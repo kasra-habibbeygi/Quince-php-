@@ -99,11 +99,32 @@
 
             }
 
-
             $UQ .= "WHERE id = '$adminId'";
             $this -> query($UQ);
+        }
 
+        public function createCategory($title , $parent){
 
+            $admin_info = $this -> getUser();
+            $admin_username = $admin_info['username'];
+
+            $FER = "SELECT id FROM `category` WHERE title = '$title' AND parent_id = '$parent'";
+            $FER_result = $this -> query($FER);
+
+            if(mysqli_num_rows($FER_result) == 0){
+
+                $category_i = "INSERT INTO `category` VALUES ('NULL' , '$title' , '$parent' , '$admin_username')";
+                $result = $this -> query($category_i);
+    
+                if($result > 0)
+                    $this -> redirect('?msg=category-create');
+
+            }else{
+
+                $this -> redirect('?msg=category-exist');
+
+            }
+                            
         }
 
     }
