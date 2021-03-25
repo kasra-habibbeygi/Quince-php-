@@ -47,6 +47,13 @@ $(document).ready(function () {
     $('.edit_modal_btn').click(function () {
 
         $('.edit_modal').fadeIn();
+        let data_id = $(this).attr('data-id');
+        $('.edit_modal a').attr('href' , `?edit-row=${data_id}`);
+
+        let category_name = $(this).parent().parent().children('td:nth-child(3)').text();
+        $('#ECN').val(category_name); 
+        
+        
 
         $('.close_edit_modal').click(function () {
 

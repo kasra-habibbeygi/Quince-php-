@@ -31,25 +31,31 @@
             $find_child = "SELECT id FROM `category` WHERE parent_id = '$row_req'";
             $con_SA = $main -> query($find_child);
 
-            while($result = mysqli_fetch_assoc($con_SA)){
+            $del_main_row = "DELETE FROM `category` WHERE id = $row_req";
+            $main -> query($del_main_row);
+
+            if(mysqli_num_rows($con_SA) > 0){
+
+                while($result = mysqli_fetch_assoc($con_SA)){
                 
-                $RR = $result['id'];
-                $del_q = "DELETE FROM `category` WHERE id = '$RR'";
-                $del_result = $main -> query($del_q);
+                    $RR = $result['id'];
+                    $del_q = "DELETE FROM `category` WHERE id = '$RR' ";
+                    $del_result2 = $main -> query($del_q);
+    
+                }
 
             }
 
         }else{
 
-            // $del_q = "DELETE FROM `category` WHERE id = $row_req";
-            // $del_result = $main -> query($del_q);
+            $del_q = "DELETE FROM `category` WHERE id = $row_req";
+            $del_result = $main -> query($del_q);
     
-            // if($del_result > 0)
-            //     $main -> redirect('?msg=delete-row');
+            if($del_result > 0)
+                $main -> redirect('?msg=delete-row');
 
         }
         
-
     }
 
     $select_main_category = "SELECT * FROM `category` WHERE parent_id = '0' ORDER BY id DESC";
@@ -89,23 +95,44 @@
                     <hr>
                 </header>
 
-                <form action="" method="get">
-                    <div class="input_field">
-                        <label for="category_title">نام دسته</label>
-                        <input type="text" id="category_title" name="category_title">
+                <form action="" method="get" autocomplete="off">
+                <div class="input_field">
+                        <label for="ECN">نام دسته</label>
+                        <input type="text" id="ECN" name="ECN">
                     </div>
                     <div class="input_field mt-4">
                         <label for="row_count">والد دسته</label>
-                        <select class="parent_select" name="category_parent">
+                        <select class="parent_select" name="ECP">
                             <optgroup label="دسته های اصلی">
                                 <option value="0">دسته اصلی </option>
+                                <?php
+                                    mysqli_data_seek($result_ms , 0);
+                                    while($MC_rows = mysqli_fetch_assoc($result_MC)){
+                                ?>
+                                    <option value="<?php echo $MC_rows['id']?>"><?php echo $MC_rows['title']?></option>
+                                <?php
+                                    }
+                                ?>
                             </optgroup>
-                            <optgroup label="زیر دسته ها">
-                                <option value="0">دسته اصلی</option>
-                            </optgroup>
+                            <?php
+                                if(mysqli_num_rows($result_SC)){
+                                    ?>
+                                        <optgroup label="زیر دسته ها">
+                                            <?php
+                                                mysqli_data_seek($result_SC , 0);
+                                                while($SC_rows = mysqli_fetch_assoc($result_SC)){
+                                            ?>
+                                                    <option value="<?php echo $SC_rows['id']?>"><?php echo $SC_rows['title']?></option>
+                                            <?php
+                                                }
+                                            ?>
+                                        </optgroup>
+                                    <?php
+                                }                            
+                            ?>
                         </select>
                     </div>
-                    <button type="submit" class="btn green_btn mt-5" name="edit_category">ویرایش دسته</button>
+                    <a href="" type="submit" class="btn green_btn mt-5 " name="edit_category">ویرایش دسته</a>
                     <button type="button" class="btn red_btn close_edit_modal mt-5">بازگشت</button>
                 </form>
 
@@ -152,7 +179,7 @@
 
                 <?php
                     $i = 1;
-                    $CE = mysqli_num_rows($result);                    
+                    $CE = mysqli_num_rows($result);                 
                     if($CE > 0){
                         ?>
                             <table>
@@ -212,7 +239,7 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <button class="btn blue_btn edit_modal_btn"><i class="fal fa-pencil-alt"></i></button>
+                                                        <button class="btn blue_btn edit_modal_btn" data-id="<?php echo $rows['id']?>"><i class="fal fa-pencil-alt"></i></button>
                                                         <a href="?delete-row=<?php echo $rows['id']?>" class="btn red_btn"><i class="fal fa-trash-alt"></i></a>
                                                     </td>
                                                 </tr>
@@ -239,7 +266,7 @@
                 <header>
                     <h3>ثبت دسته جدید</h3>
                 </header>
-                <form action="" method="get">
+                <form action="" method="get" autocomplete="off">
                     <div class="input_field">
                         <label for="category_title">نام دسته</label>
                         <input type="text" id="category_title" name="category_title">
@@ -250,23 +277,30 @@
                             <optgroup label="دسته های اصلی">
                                 <option value="0">دسته اصلی </option>
                                 <?php
+                                    mysqli_data_seek($result_ms , 0);
                                     while($MC_rows = mysqli_fetch_assoc($result_MC)){
-                                        ?>
-                                <option value="<?php echo $MC_rows['id']?>"><?php echo $MC_rows['title']?></option>
+                                ?>
+                                    <option value="<?php echo $MC_rows['id']?>"><?php echo $MC_rows['title']?></option>
                                 <?php
                                     }
                                 ?>
                             </optgroup>
-                            <optgroup label="زیر دسته ها">
-                                <option value="0">دسته اصلی</option>
-                                <?php
-                                    while($SC_rows = mysqli_fetch_assoc($result_SC)){
-                                        ?>
-                                <option value="<?php echo $SC_rows['id']?>"><?php echo $SC_rows['title']?></option>
-                                <?php
-                                    }
-                                ?>
-                            </optgroup>
+                            <?php
+                                if(mysqli_num_rows($result_SC)){
+                                    ?>
+                                        <optgroup label="زیر دسته ها">
+                                            <?php
+                                                mysqli_data_seek($result_SC , 0);
+                                                while($SC_rows = mysqli_fetch_assoc($result_SC)){
+                                            ?>
+                                                    <option value="<?php echo $SC_rows['id']?>"><?php echo $SC_rows['title']?></option>
+                                            <?php
+                                                }
+                                            ?>
+                                        </optgroup>
+                                    <?php
+                                }                            
+                            ?>
                         </select>
                     </div>
                     <button type="submit" class="btn green_btn mt-4" name="create_category">ثبت دسته جدید</button>
@@ -274,7 +308,6 @@
             </div>
         </div>
     </section>
-
     <script src="../../assets/js/general/jQuery.js"></script>
     <script src="../../assets/js/general/bootstrap.js"></script>
     <script src="../../assets/js/general/select2.js"></script>
