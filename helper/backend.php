@@ -190,6 +190,20 @@
             
         }
 
+        public function editCategory($E_name , $E_parent , $E_id){
+
+            $creator = $this -> getUser();
+            $creator = $creator['username'];
+            $update_Q = "UPDATE `category` SET title = '$E_name' , parent_id = '$E_parent' , creator = '$creator' WHERE id = '$E_id'";
+            $result = $this -> query($update_Q);
+            if($result > 0)
+                $this -> redirect('?msg=edit-confirm');
+    
+            else    
+                $this -> redirect('?msg=edit-failed');
+
+        }
+
     }
 
 ?>

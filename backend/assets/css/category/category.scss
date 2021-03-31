@@ -6,6 +6,7 @@
 @import '../partials/errors';
 @import '../partials/table';
 @import '../partials/select';
+@import '../partials/pagination';
 
 .page_main_field {
     margin-top: 55px;
@@ -165,6 +166,12 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+
+            .select_disabled{
+                .select2-selection--single{
+                    opacity: 0.5;
+                }
+            }
 
             form {
                 width: 100%;

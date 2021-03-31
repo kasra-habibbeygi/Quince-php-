@@ -27,6 +27,9 @@ $(document).ready(function () {
         else if($('.error_field').hasClass('create-failed'))
             activeAlert('مشکلی در اینجاد دسته بندی به وجود آمده است .');
 
+        else if($('.error_field').hasClass('edit-failed'))
+            activeAlert('مشکلی در ویرایش دسته به وجود آمده است .');
+
         else if ($('.error_field').hasClass('category-create')) {
 
             $('.error_field').removeClass('warning_error');
@@ -38,6 +41,12 @@ $(document).ready(function () {
             $('.error_field').removeClass('warning_error');
             $('.error_field').addClass('success_error');
             activeAlert('دسته مورد نظر با موفقیت حذف شد .');
+
+        }else if ($('.error_field').hasClass('edit-confirm')) {
+
+            $('.error_field').removeClass('warning_error');
+            $('.error_field').addClass('success_error');
+            activeAlert('دسته مورد نظر با موفققیت ویرایش شد .');
 
         }
 
@@ -82,7 +91,7 @@ $(document).ready(function () {
     // get row id when check the checkbox
     let check_list = [];
     let check_all = [];
-    $('.Q_checkbox').click(function(){
+    $('.check_row').click(function(){
 
         let del_value = $(this).val();
         if($(this).is(':checked')){
@@ -99,35 +108,39 @@ $(document).ready(function () {
         window.final_result = check_list.join(',');
         check_all = [];
 
-        for(let j = 0 ; j < $('.Q_checkbox:checked').length ; j++)
+        for(let j = 0 ; j < $('.check_row:checked').length ; j++)
             check_all.push('1');
         
-        if(check_all.length == $('.Q_checkbox').length - 1)
+        if(check_all.length == $('.check_row').length)
             $('.check_all').attr('checked' , true);
+        
+        else
+            $('.check_all').attr('checked' , false);
 
     });
 
     //check all
-    $('.check_all').change(function(){
+    $('.check_all').click(function(){
 
         if($('.check_all').is(':checked')){
 
-            $('.Q_checkbox').prop('checked' , true);
+            $('.check_row').prop('checked' , true);
+            $('.check_all').attr('checked' , true);
 
             check_list = [];
-            for(let i = 0 ; i < $('.Q_checkbox').length ; i++){
+            for(let i = 0 ; i < $('.check_row').length ; i++){
 
-                check_list.push($('.Q_checkbox').eq(i).val());
+                check_list.push($('.check_row').eq(i).val());
 
             }
-            check_list.splice(0 , 1);
-            window.final_result = check_list.join(',')
+            window.final_result = check_list.join(',');
 
         }else{
 
-            $('.Q_checkbox').prop('checked' , false);
+            $('.check_row').prop('checked' , false);
+            $('.check_all').attr('checked' , false);
             check_list = [];
-            window.final_result = check_list.join(',')
+            window.final_result = check_list.join(','); 
 
         }
 
@@ -158,6 +171,54 @@ $(document).ready(function () {
 
         });
 
+    });
+
+    // open edit modal
+    $('.edit_modal_btn').click(function(){
+
+        // fill category name and category select parent
+        let row_id = $(this).attr('data-id');
+        let parent_name = $(this).parent().parent().children('td:nth-child(4)').text();
+        $('#modal_row_id').attr('value' , row_id);
+        $('#ECN').val($(this).parent().parent().children('td:nth-child(3)').text());
+
+        for(let x = 0 ; x < $('.ECP option').length ; x++){
+
+            let option_text = $('.ECP option').eq(x).text();
+            console.log(option_text)
+            if(option_text == parent_name){
+
+                $('.ECP option').eq(x).attr('selected' , true);
+                $('.ECP').next().children().children().children('.select2-selection__rendered').text(option_text);
+
+            }
+
+        }
+
+        // if select was main category , disabled select
+        if($('.ECP').next().children().children().children('.select2-selection__rendered').text() == 'دسته اصلی')
+            $('.ECP').attr('disabled' , true).next().addClass('select_disabled');
+
+        else
+            $('.ECP').attr('disabled' , false).next().removeClass('select_disabled');
+
+        // fadein and fadeout
+        $('.edit_modal').fadeIn();
+        $('.close_edit_modal').click(function(){
+
+            $('.edit_modal').fadeOut();
+            $('.ECP option').attr('selected' , false);
+
+        })
+
+    });
+
+    //row_count
+    $('#row_count').change(function(){
+    
+        let row_count = $(this).val();
+        redirect(`?page-count=${row_count}`);
+    
     });
 
 });

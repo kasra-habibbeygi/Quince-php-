@@ -33,3 +33,7 @@ for(let i = 0 ; i < $('.collaps_item button').length ; i++){
     });
 
 }
+
+function redirect($url){
+    window.location.href = $url;
+}
