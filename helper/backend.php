@@ -103,28 +103,91 @@
             $this -> query($UQ);
         }
 
-        public function createCategory($title , $parent){
+        public function createCategory($name , $parent){
 
-            $admin_info = $this -> getUser();
-            $admin_username = $admin_info['username'];
+            $find_id = "SELECT id FROM `category` WHERE id = '$parent'";
+            $FI_result = $this -> query($find_id);
+            
+            if(gettype(mysqli_fetch_assoc($FI_result)) !== 'NULL' || $parent == '0'){
 
-            $FER = "SELECT id FROM `category` WHERE title = '$title' AND parent_id = '$parent'";
-            $FER_result = $this -> query($FER);
-
-            if(mysqli_num_rows($FER_result) == 0){
-
-                $category_i = "INSERT INTO `category` VALUES ('NULL' , '$title' , '$parent' , '$admin_username')";
-                $result = $this -> query($category_i);
-    
+                $creator = $this -> getUser();
+                $creator = $creator['username'];
+                $CCQ = "INSERT INTO `category` VALUES ('NULL' , '$name' , '$parent' , '$creator')";
+                $result = $this -> query($CCQ);
+                
                 if($result > 0)
                     $this -> redirect('?msg=category-create');
 
+                else
+                    $this -> redirect('?msg=create-failed');
+
             }else{
 
-                $this -> redirect('?msg=category-exist');
+                $this -> redirect('?msg=create-failed');
 
             }
-                            
+
+        }
+
+        public function deleteCategory(){
+
+            $delete_id = $this -> safeGet('delete-row');
+            $delete_id = (int)$delete_id;
+
+            // delete child if parent was deleted
+            $S_Q = "SELECT parent_id FROM `category` WHERE id = '$delete_id'";
+            $S_result = $this -> query($S_Q);
+            $parent_id = mysqli_fetch_assoc($S_result);
+            
+            if($parent_id['parent_id'] == '0'){
+
+                $D_Q = "DELETE FROM `category` WHERE parent_id = '$delete_id'";
+                $this -> query($D_Q);
+    
+            }
+
+            // delete soome row
+            $D_Q = "DELETE FROM `category` WHERE id = '$delete_id'";
+            $D_result = $this -> query($D_Q);
+
+            if($D_result > 0)
+                $this -> redirect('?msg=delete-confirm');
+
+            else    
+                $this -> redirect('?msg=delete-failed');
+
+        }
+
+        public function deleteAllCategory(){
+
+            $delete_all = $this -> safeGet('delete-all');
+
+            // delete child if parent was deleted
+            $S_Q = "SELECT * FROM `category` WHERE id IN($delete_all)";
+            $S_result = $this -> query($S_Q);
+
+            while($parent_id = mysqli_fetch_assoc($S_result)){
+
+                if($parent_id['parent_id'] == '0'){
+
+                    $id = $parent_id['id'];
+                    $DSCA_Q = "DELETE FROM `category` WHERE parent_id = '$id'";
+                    $this -> query($DSCA_Q);
+       
+                }
+
+            }
+
+            // delete all
+            $DA_Q = "DELETE FROM `category` WHERE id IN($delete_all)";
+            $DA_result = $this -> query($DA_Q);
+
+            if($DA_result)
+                $this -> redirect('?msg=delete-confirm');
+
+            else    
+                $this -> redirect('?msg=delete-failed');
+            
         }
 
     }

@@ -5,65 +5,33 @@
 
     if(isset($_GET['create_category'])){
 
-        $category_title = $main -> safeGet('category_title');
-        $category_parent = $main -> safeGet('category_parent');
-        
-        if($category_title === '')
+        $C_name = $main -> safeGet('category_title');
+        $C_parent = (int)$_GET['category_parent'];
+
+        if($C_name == '')
             $main -> redirect('?msg=empty-input');
 
-        else if(!is_numeric($category_parent))            
-            $main -> redirect('?msg=invalid-input');
+        else    
+            $main -> createCategory($C_name , $C_parent);
 
-        else
-            $main -> createCategory($category_title , (int)$category_parent);
-
-
-    }else if(isset($_GET['delete-row'])){
-
-        $row_req = $main -> safeGet('delete-row');
-
-        $select_all = "SELECT * FROM `category` WHERE id = '$row_req'";
-        $con_SA = $main -> query($select_all);
-        $SA_result = mysqli_fetch_assoc($con_SA);
-
-        if($SA_result['parent_id'] === '0'){
-
-            $find_child = "SELECT id FROM `category` WHERE parent_id = '$row_req'";
-            $con_SA = $main -> query($find_child);
-
-            $del_main_row = "DELETE FROM `category` WHERE id = $row_req";
-            $main -> query($del_main_row);
-
-            if(mysqli_num_rows($con_SA) > 0){
-
-                while($result = mysqli_fetch_assoc($con_SA)){
-                
-                    $RR = $result['id'];
-                    $del_q = "DELETE FROM `category` WHERE id = '$RR' ";
-                    $del_result2 = $main -> query($del_q);
-    
-                }
-
-            }
-
-        }else{
-
-            $del_q = "DELETE FROM `category` WHERE id = $row_req";
-            $del_result = $main -> query($del_q);
-    
-            if($del_result > 0)
-                $main -> redirect('?msg=delete-row');
-
-        }
-        
     }
 
-    $select_main_category = "SELECT * FROM `category` WHERE parent_id = '0' ORDER BY id DESC";
-    $select_sub_category = "SELECT * FROM `category` WHERE parent_id != '0' ORDER BY id DESC";
-    $select_category = "SELECT * FROM `category`ORDER BY id DESC";
-    $result_MC = $main -> query($select_main_category);
-    $result_SC = $main -> query($select_sub_category);
-    $result = $main -> query($select_category);
+    if(isset($_GET['delete-row'])){
+
+        $main -> deleteCategory();
+
+    }
+
+    if(isset($_GET['delete-all'])){
+
+        $main -> deleteAllCategory();
+
+    }
+
+    // get category table rows
+    $category_get_Q = "SELECT * FROM `category` ORDER BY id DESC";
+    $category_get_result = $main -> query($category_get_Q);
+    $category_rows = mysqli_fetch_assoc($category_get_result);
 
 ?>
 <!DOCTYPE html>
@@ -96,46 +64,35 @@
                 </header>
 
                 <form action="" method="get" autocomplete="off">
-                <div class="input_field">
+                    <div class="input_field">
                         <label for="ECN">نام دسته</label>
                         <input type="text" id="ECN" name="ECN">
                     </div>
+                    <input type="text" id="modal_row_id" value="" name="ECI" hidden>
                     <div class="input_field mt-4">
                         <label for="row_count">والد دسته</label>
-                        <select class="parent_select" name="ECP">
-                            <optgroup label="دسته های اصلی">
-                                <option value="0">دسته اصلی </option>
-                                <?php
-                                    mysqli_data_seek($result_ms , 0);
-                                    while($MC_rows = mysqli_fetch_assoc($result_MC)){
-                                ?>
-                                    <option value="<?php echo $MC_rows['id']?>"><?php echo $MC_rows['title']?></option>
-                                <?php
-                                    }
-                                ?>
-                            </optgroup>
-                            <?php
-                                if(mysqli_num_rows($result_SC)){
-                                    ?>
-                                        <optgroup label="زیر دسته ها">
-                                            <?php
-                                                mysqli_data_seek($result_SC , 0);
-                                                while($SC_rows = mysqli_fetch_assoc($result_SC)){
-                                            ?>
-                                                    <option value="<?php echo $SC_rows['id']?>"><?php echo $SC_rows['title']?></option>
-                                            <?php
-                                                }
-                                            ?>
-                                        </optgroup>
-                                    <?php
-                                }                            
-                            ?>
+                        <select class="parent_select" id="edit_select" name="ECP">
+                            <option value="0">دسته اصلی </option>
                         </select>
                     </div>
-                    <a href="" type="submit" class="btn green_btn mt-5 " name="edit_category">ویرایش دسته</a>
+                    <button type="submit" class="btn green_btn mt-5 " name="edit_category">ویرایش دسته</button>
                     <button type="button" class="btn red_btn close_edit_modal mt-5">بازگشت</button>
                 </form>
 
+            </div>
+        </div>
+    </div>
+
+    <div class="delete_modal">
+        <div class="DM_main_field">
+            <div class="content">
+                <i class="fal fa-exclamation-circle"></i>
+                <p></p>
+                <span class="alert_box"></span>
+                <div>
+                    <button id="CDCM" type="button">خیر</button>
+                    <a href="">بله</a>
+                </div>
             </div>
         </div>
     </div>
@@ -170,96 +127,111 @@
                                 <option>50</option>
                             </select>
                         </div>
-                        <button class="btn red_btn">
+                        <button class="btn red_btn delete_all">
                             <i class="fal fa-trash-alt"></i>
                         </button>
                     </div>
                 </header>
                 <div class="page_content">
+                    <?php 
+                        if(gettype($category_rows['id']) !== 'NULL'){
+                            ?>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <div class="grid">
+                                                    <label class="checkbox path">
+                                                        <input type="checkbox" class="Q_checkbox check_all">
+                                                        <svg viewBox="0 0 21 21">
+                                                            <path
+                                                                d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186">
+                                                            </path>
+                                                        </svg>
+                                                    </label>
+                                                </div>
+                                            </th>
+                                            <th>ردیف</th>
+                                            <th>نام دسته</th>
+                                            <th>والد دسته</th>
+                                            <th>سازنده</th>
+                                            <th>تعداد زیر دسته</th>
+                                            <th>تنظیمات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                            $i = 1;
+                                            mysqli_data_seek($category_get_result , 0);
+                                            while($C_rows = mysqli_fetch_assoc($category_get_result)){
 
-                <?php
-                    $i = 1;
-                    $CE = mysqli_num_rows($result);                 
-                    if($CE > 0){
-                        ?>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <div class="grid">
-                                                <label class="checkbox path">
-                                                    <input name="check_row" value="0" type="checkbox" class="Q_checkbox">
-                                                    <svg viewBox="0 0 21 21">
-                                                        <path
-                                                            d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186">
-                                                        </path>
-                                                    </svg>
-                                                </label>
-                                            </div>
-                                        </th>
-                                        <th>ردیف</th>
-                                        <th>نام دسته</th>
-                                        <th>والد دسته</th>
-                                        <th>سازنده</th>
-                                        <th>تعداد زیر دسته</th>
-                                        <th>تنظیمات</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                        while($rows = mysqli_fetch_assoc($result)){
-                                            $row_PI = $rows['parent_id'];
-                                            $select_parent = "SELECT title FROM `category` WHERE id = '$row_PI'";
-                                            $SP_result = $main -> query($select_parent);
-                                            $SP_result = mysqli_fetch_assoc($SP_result);
+                                                // find parents
+                                                $C_name = $C_rows['parent_id'];
+                                                $parent_name_Q = "SELECT title FROM `category` WHERE id = '$C_name'";
+                                                $PNQ_result = $main -> query($parent_name_Q);
+                                                $parent_name = mysqli_fetch_assoc($PNQ_result);
 
-                                            ?>
-                                                <tr>
-                                                    <td>
-                                                        <div class="grid">
-                                                            <label class="checkbox path">
-                                                                <input name="check_row" value="0" type="checkbox" class="Q_checkbox">
-                                                                <svg viewBox="0 0 21 21">
-                                                                    <path
-                                                                        d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186">
-                                                                    </path>
-                                                                </svg>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td><?php echo $i++?></td>
-                                                    <td><?php echo $rows['title']?></td>
-                                                    <td><?php echo $SP_result['title'] !== null ? $SP_result['title'] : 'دسته اصلی' ?></td>
-                                                    <td>
-                                                        <a href=""><?php echo $rows['creator']?></a>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table_pill green">
-                                                            10
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn blue_btn edit_modal_btn" data-id="<?php echo $rows['id']?>"><i class="fal fa-pencil-alt"></i></button>
-                                                        <a href="?delete-row=<?php echo $rows['id']?>" class="btn red_btn"><i class="fal fa-trash-alt"></i></a>
-                                                    </td>
-                                                </tr>
-                                            <?php
-                                        }
-                                    ?>
-                                </tbody>
-                            </table>
-                        <?php
-                    }
-                ?>
-                <?php
-                    if($CE == 0){
-                        ?>
-                            <div class="not_exist">
-                                موردی جهت نمایش وجود ندارد !
-                            </div>
-                        <?php                        
-                    }
-                ?>
+                                                // find sub category count
+                                                if($C_name == '0'){
+
+                                                    $C_id = $C_rows['id'];
+                                                    $SC_count_Q = "SELECT id FROM `category` WHERE parent_id = '$C_id'";
+                                                    $SC_result = $main -> query($SC_count_Q);
+                                                    $C_count = mysqli_num_rows($SC_result);
+
+                                                }else{
+
+                                                    $C_count = '0';
+
+                                                }
+                                                ?>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="grid">
+                                                                <label class="checkbox path">
+                                                                    <input name="check_row" type="checkbox" class="Q_checkbox" value="<?php echo $C_rows['id']?>">
+                                                                    <svg viewBox="0 0 21 21">
+                                                                        <path
+                                                                            d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186">
+                                                                        </path>
+                                                                    </svg>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                        <td data-id="<?php echo $C_rows['id']?>"><?php echo $i++?></td>
+                                                        <td><?php echo $C_rows['title']?></td>
+                                                        <td><?php echo $C_rows['parent_id'] == 0 ? 'دسته اصلی' : $parent_name['title'] ?></td>
+                                                        <td>
+                                                            <a href=""><?php echo $C_rows['creator']?></a>
+                                                        </td>
+                                                        <td>
+                                                            <div class="table_pill green">
+                                                                <?php echo $C_count?>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn blue_btn edit_modal_btn" data-id="">
+                                                                <i class="fal fa-pencil-alt"></i>
+                                                            </button>
+                                                            <button class="btn red_btn delete_confirm">
+                                                                <i class="fal fa-trash-alt"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                <?php
+                                            }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            <?php   
+                        }else{
+                            ?>
+                                <div class="not_exist">
+                                    موردی جهت نمایش وجود ندارد !
+                                </div>
+                            <?php
+                        }
+                    ?>
                 </div>
             </div>
             <div class="right_field">
@@ -269,37 +241,21 @@
                 <form action="" method="get" autocomplete="off">
                     <div class="input_field">
                         <label for="category_title">نام دسته</label>
-                        <input type="text" id="category_title" name="category_title">
+                        <input type="text" id="category_title" name="category_title" autofocus>
                     </div>
                     <div class="input_field mt-4">
                         <label for="row_count">والد دسته</label>
                         <select class="parent_select" name="category_parent">
-                            <optgroup label="دسته های اصلی">
-                                <option value="0">دسته اصلی </option>
+                            <option value="0">دسته اصلی </option>
                                 <?php
-                                    mysqli_data_seek($result_ms , 0);
-                                    while($MC_rows = mysqli_fetch_assoc($result_MC)){
-                                ?>
-                                    <option value="<?php echo $MC_rows['id']?>"><?php echo $MC_rows['title']?></option>
-                                <?php
-                                    }
-                                ?>
-                            </optgroup>
-                            <?php
-                                if(mysqli_num_rows($result_SC)){
+                                    $find_parent_Q = "SELECT * FROM `category` WHERE parent_id = 0 ORDER BY id DESC";
+                                    $find_parent_result = $main -> query($find_parent_Q);
+
+                                    while($P_rows = mysqli_fetch_assoc($find_parent_result)){
                                     ?>
-                                        <optgroup label="زیر دسته ها">
-                                            <?php
-                                                mysqli_data_seek($result_SC , 0);
-                                                while($SC_rows = mysqli_fetch_assoc($result_SC)){
-                                            ?>
-                                                    <option value="<?php echo $SC_rows['id']?>"><?php echo $SC_rows['title']?></option>
-                                            <?php
-                                                }
-                                            ?>
-                                        </optgroup>
+                                        <option value="<?php echo $P_rows['id']?>"><?php echo $P_rows['title']?></option>
                                     <?php
-                                }                            
+                                }                                    
                             ?>
                         </select>
                     </div>

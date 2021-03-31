@@ -4,7 +4,7 @@
 
 ?>
 
-<nav>
+<!-- <nav>
     <div class="left_items">
         <div>
             <i class="fal fa-bell"></i>
@@ -110,7 +110,7 @@
             </li>
         </ul>
     </div>
-</aside>
+</aside> -->
 
 <!-- exit modal -->
 <div class="exit_modal">
